@@ -5,7 +5,7 @@ from os.path import join
 from airflow.models import DAG
 from operators.twitter_operator import TwitterOperator
 
-with DAG(dag_id="twitter_dag", start_date=datetime.now()) as dag:
+with DAG(dag_id="twitter_dag", schedule_interval='@daily', start_date=datetime.now()) as dag:
     twitter_operator = TwitterOperator(
         task_id="twitter_bloomberg",
         query="business",
