@@ -3,6 +3,8 @@ from pyspark.sql import functions as fct
 from os.path import join
 import argparse
 
+#The next two methods below explode the hierarchy from the data and put all fields on the same level
+    #to manipulate it more easily
 def get_tweets_data(df):
     return df\
         .select(
@@ -25,9 +27,11 @@ def get_user_data(df):
             "users.*"
         )
         
+#Export the dataframe to json file
 def export_json(df, dest):
     df.coalesce(1).write.mode("overwrite").json(dest)
-    
+  
+#Get the json bronze data and transform into json silver data with the three methods above.
 def twitter_transform(spark, src, dest, process_date):
     df = spark.read.json(src)
     
@@ -41,6 +45,7 @@ def twitter_transform(spark, src, dest, process_date):
     
     
 if __name__ == "__main__":
+    #only for test
     parser = argparse.ArgumentParser(
         description="Spark Twitter Transformation"
     )
