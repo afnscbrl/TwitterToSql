@@ -3,11 +3,11 @@ sys.path.append("/home/afnscbrl/Documents/TwitterToSQL/airflow/plugins")
 
 
 import json
-from datetime import datetime, timedelta, date
+from datetime import datetime
 from pathlib import Path
 from os.path import join
 
-from airflow.models import DAG, BaseOperator, TaskInstance
+from airflow.models import DAG, BaseOperator
 from airflow.utils.decorators import apply_defaults
 from hooks.twitter_hook import TwitterHook
 
@@ -55,6 +55,7 @@ class TwitterOperator(BaseOperator):
                 output_file.write("\n")
 
 if __name__ == "__main__":
+    #Only to test
     with DAG(dag_id="TwitterTest", start_date=datetime.now()) as dag:
         to = TwitterOperator(
             query="business",
@@ -66,5 +67,4 @@ if __name__ == "__main__":
                 ),
             task_id="test_run"
         )
-        #ti = TaskInstance(task=to, execution_date=datetime.now() - timedelta(days=1))
         to.run()
