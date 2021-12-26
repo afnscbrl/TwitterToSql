@@ -1,4 +1,4 @@
-from airflow.hooks.http_hook import HttpHook
+from airflow.providers.http.hooks.http import HttpHook
 import requests
 import json
 
@@ -15,7 +15,7 @@ class TwitterHook(HttpHook):
     def create_url(self):
         query = self.query
         tweet_fields = "tweet.fields=author_id,conversation_id,created_at,id,in_reply_to_user_id,public_metrics,text"
-        user_fields = "expansions=author_id&user.fields=id,name,username,public_metrics"
+        user_fields = "expansions=author_id&user.fields=id,name,username"
         url = f"{self.base_url}/2/tweets/search/recent?query={query}&{tweet_fields}&{user_fields}"
         return url
 
