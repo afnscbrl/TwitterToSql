@@ -21,7 +21,7 @@ class TwitterOperator(BaseOperator):
         # "end_time"
     ]
 
-    @apply_defaults
+    #@apply_defaults
     def __init__(
         self,
         query,
