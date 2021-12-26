@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/home/afnscbrl/datapipeline/airflow/plugins/")
+sys.path.append("/home/afnscbrl/Documents/TwitterToSQL/airflow/plugins/")
 
 from datetime import datetime, date
 from os.path import join
@@ -14,13 +14,15 @@ from airflow.utils.dates import days_ago
 ARGS = {
     "owner": "airflow",
     "depends_on_past": False,
-    "start_date": days_ago(6)
+    "start_date": datetime.now()
 }
 
 #Defining folder to store data lake
 BASE_FOLDER = join(
-    str(Path("~/TwitterToSQL").expanduser()),
-    "datalake/{stage}/bloomberg/{partition}"
+    # str(Path("~/TwitterToSQL").expanduser()),
+    # "datalake/{stage}/bloomberg/{partition}"
+    str(Path("~/Documents").expanduser()),
+    "TwitterToSQL/datalake/{stage}/bloomberg/{partition}"
 )
 
 PARTITION_FOLDER = "extract_date={{ ds }}"
@@ -61,6 +63,14 @@ with DAG(
                 "{{ ds }}",
             ]
         )
+    twitter_gold = SparkSubmitOperator(
+            task_id="transform_twitter_gold",
+            application=join(
+                str(Path(__file__).parents[2]),
+                "spark/insight_tweet.py"
+            ),
+            name = "tweets_to_gold"
+        )
 
 #This define the hierarchy of the tasks.
-twitter_operator >> twitter_transform
+twitter_operator >> twitter_transform >> twitter_gold
