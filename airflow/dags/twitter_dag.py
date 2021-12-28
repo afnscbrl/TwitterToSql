@@ -19,14 +19,12 @@ ARGS = {
 
 #Defining folder to store data lake
 BASE_FOLDER = join(
-    # str(Path("~/TwitterToSQL").expanduser()),
-    # "datalake/{stage}/bloomberg/{partition}"
     str(Path("~/Documents").expanduser()),
     "TwitterToSQL/datalake/{stage}/bloomberg/{partition}"
 )
 
-PARTITION_FOLDER = "extract_date={{ ds }}"
-#TIMESTAMP_FORMAT = "%Y-%m-%dT%H:%M:%S.00Z"
+PARTITION_FOLDER_EXTRACT = "extract_date={{ ds }}"
+PARTITION_FOLDER_PROCESS = "process_date={{ ds }}"
 
 #Creating a dag
 with DAG(
@@ -40,7 +38,7 @@ with DAG(
         task_id="twitter_business",
         query="business",
         file_path=join(
-            BASE_FOLDER.format(stage="Bronze", partition=PARTITION_FOLDER),
+            BASE_FOLDER.format(stage="Bronze", partition=PARTITION_FOLDER_EXTRACT),
             "Bloomberg_{{ ds_nodash }}.json"
         ),
     )
@@ -56,21 +54,45 @@ with DAG(
             name = "twitter_transformation",
             application_args=[
                 "--src",
-                BASE_FOLDER.format(stage="Bronze", partition=PARTITION_FOLDER),
+                BASE_FOLDER.format(stage="Bronze", partition=PARTITION_FOLDER_EXTRACT),
                 "--dest",
                 BASE_FOLDER.format(stage="Silver", partition=""),
                 "--process-date",
                 "{{ ds }}",
             ]
         )
-    twitter_gold = SparkSubmitOperator(
+    #Creating a dag task. This task get the functions on insight_tweet.py that process the data in Silver 
+        #stage data lake to Gold stage data lake
+    transform_gold = SparkSubmitOperator(
             task_id="transform_twitter_gold",
             application=join(
                 str(Path(__file__).parents[2]),
                 "spark/insight_tweet.py"
             ),
-            name = "tweets_to_gold"
+            name = "tweets_to_gold",
+                        application_args=[
+                "--src",
+                BASE_FOLDER.format(stage="Silver", partition=join('tweet/',PARTITION_FOLDER_PROCESS)),
+                "--dest",
+                BASE_FOLDER.format(stage="Gold", partition=""),
+                "--process-date",
+                "{{ ds }}",
+            ]
+        )
+    #Creating a dag task. This task get the functions on to_sql.py that send the data in Gold
+    #stage data lake to a Postgress database
+    to_sql = SparkSubmitOperator(
+            task_id="to_sql",
+            application=join(
+                str(Path(__file__).parents[2]),
+                "spark/to_sql.py"
+            ),
+            name = "tweets_to_sql",
+                        application_args=[
+                "--src",
+                BASE_FOLDER.format(stage="Gold", partition=join('tweet/',PARTITION_FOLDER_PROCESS)),
+            ]
         )
 
 #This define the hierarchy of the tasks.
-twitter_operator >> twitter_transform >> twitter_gold
+twitter_operator >> twitter_transform >> transform_gold >> to_sql
