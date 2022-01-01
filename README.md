@@ -1,3 +1,22 @@
+## Tweets to Postgresql with airflow and Spark
+
+**Intro:**
+  I developed a system that get tweets in Twitter API and transform it on data lake to push them on database with Postgresql.
+
+**Motivation and Goal:**
+  I was tryin understand how Airflow works to orchestrate tasks and how Spark manipulate data, basicaly i was studyin a real case of ETL and Datalake with this two tools.
+  
+**Phases:**
+  - Testing Twitter API
+  - Connecting to Twiiter
+  - Creating a DAG
+  - Getting the data
+  - First tranformation of the data (Bronze to Silver)
+  - Second transformation of the data (Silver to Gold)
+  - Putting the transformations in the Airflow dag as task
+  - Filling in a table database with the tweets of the Gold stage with a task in Airflow.
+
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/afnscbrl/TwitterToSql/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
