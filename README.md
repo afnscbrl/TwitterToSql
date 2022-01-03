@@ -8,7 +8,7 @@
   
 **Phases:**
   - Testing Twitter API
-  - Connecting to Twiiter
+  - Connecting to Twitter
   - Creating a DAG
   - Getting the data
   - First tranformation of the data (Bronze to Silver)
@@ -16,7 +16,7 @@
   - Putting the transformations in the Airflow dag as task
   - Filling in a table database with the tweets of the Gold stage with a task in Airflow.
 
-### Testing Twitter API
+### Testing the Twitter API
 
 First of all, i developed a small script to test the Twitter API and look at the data response, in this case, a json file. This script i dont included in final repo cause its made for test but a quote it here:
 
@@ -80,5 +80,5 @@ if __name__ == "__main__":
 ```
 With the json file in hand, i could understand better how to manipulate the data.
 
-### Connecting to Twiiter
+### Connecting to Twitter
 
