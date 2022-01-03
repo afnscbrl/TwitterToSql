@@ -1,9 +1,9 @@
 ## Tweets to Postgresql with airflow and Spark
 
-**Intro:**
+**Intro:**<br/>
   I developed a system that get tweets in Twitter API and transform it on data lake to push them on database with Postgresql.
 
-**Motivation and Goal:**
+**Motivation and Goal:**<br/>
   I was tryin understand how Airflow works to orchestrate tasks and how Spark manipulate data, basicaly i was studyin a real case of ETL and Datalake with this two tools.
   
 **Phases:**
@@ -97,6 +97,7 @@ and i recieved a json file with this struct:
 With the json file in hand, i could understand better how to manipulate the data.
 
 ### Connecting to Twitter
-https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/plugins/hooks/twitter_hook.py
-Then, i built a class that receive as an argument an airflow module named httphook. In this class i'll connect airflow to twitter api and giving in all the params that i wish receive of the twitter API like author id, twitter id, user id, create at, etc. I created a method that pages if i receive more than one page in the json file (for standard, the twitter API give us 10 tweets per page).
+https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/plugins/hooks/twitter_hook.py <br/>
+Then, i built a class that receive as an argument an airflow module named httphook. In this class i'll connect airflow to twitter api and giving in all the params that i wish receive of the twitter API like author id, twitter id, user id, create at, etc. Also, in this class i created a method that pages if i receive more than one page in the json file (for standard, the twitter API give us 10 tweets per page).
+
 
