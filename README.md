@@ -97,6 +97,8 @@ and i recieved a json file with this struct:
 With the json file in hand, i could understand better how to manipulate the data.
 
 ### Connecting to Twitter
-Then, i built a class<a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/plugins/hooks/twitter_hook.py"> (twitter_hook.py)</a> that receive as an argument an airflow module named httphook. In this class i'll connect airflow to twitter api and giving in all the params that i wish receive of the twitter API like author id, twitter id, user id, create at, etc. Also, in this class i created a method that pages if i receive more than one page in the json file (for standard, the twitter API give us 10 tweets per page).
+Then, i built a class<a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/plugins/hooks/twitter_hook.py"> (twitter_hook.py)</a> that receive as an argument an airflow module named httphook. In this class i'll connect airflow to twitter api and giving in all the params that i wish receive of the twitter API like author id, twitter id, user id, create at, etc. Also, in this class i created a method that pages if i receive more than one page in the json file (for standard, the twitter API give us 10 tweets per page). <br/>
+In airflow webserver i needed to creat a connection with these parameter:
+<img src=> 
 
 
