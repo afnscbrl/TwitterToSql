@@ -97,8 +97,12 @@ and i recieved a json file with this struct:
 With the json file in hand, i could understand better how to manipulate the data.
 
 ### Connecting to Twitter
-Then, i built a class<a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/plugins/hooks/twitter_hook.py"> (twitter_hook.py)</a> that receive as an argument an airflow module named httphook. In this class i'll connect airflow to twitter api and giving in all the params that i wish receive of the twitter API like author id, twitter id, user id, create at, etc. Also, in this class i created a method that pages if i receive more than one page in the json file (for standard, the twitter API give us 10 tweets per page). <br/>
+Then, i built a python file with one class<a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/plugins/hooks/twitter_hook.py"> (twitter_hook.py)</a> that receive as an argument an airflow module named httphook. In this class i'll connect airflow to twitter api and giving in all the params that i wish receive of the twitter API like author id, twitter id, user id, create at, etc. Also, in this class i created a method that pages if i receive more than one page in the json file (for standard, the twitter API give us 10 tweets per page). <br/>
 In airflow webserver i needed to creat a connection with these parameter:
-<img src="https://drive.google.com/file/d/1qeCF3f8hbYma37dqhHkvO4nQbKBg8FEj/view?usp=sharing"> 
+<img src="https://github.com/afnscbrl/TwitterToSql/blob/5c50edba84cdc2dba1d8c40e397e3566fbf2fa98/airflow/twitter_connection.png"> 
 
+### Creating a DAG and Getting the data
+Next, i made  other python script with one class<a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/plugins/operators/twitter_operator.py"> (twitter_operator.py)</a> that is the first task in airflow DAG. This script get a request made for Twitter_Hook and transform into airflow operator, then save the response. Continuing, i built other python file named <a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/dags/twitter_dag.py"> twitter_dag.py </a> responsible for creating a DAG in airflow and get the methods in twitter_operator to execute it when the the task starts.<br/> All the others scripts created will be add in this file to compose the tasks orchestrade by the airflow. With this operator done, we need just start the DAG in airflow webserver to get the first stage (bronze) of the datalake.
 
+### First tranformation of the data (Bronze to Silver)
+In this step, i introduced the Apache spark to manipulate the json file.
