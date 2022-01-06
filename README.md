@@ -16,6 +16,11 @@
   - Putting the transformations in the Airflow dag as task
   - Filling in a table database with the tweets of the Gold stage with a task in Airflow.
 
+**Versions:
+  - Python 3.9
+  - Apache Airflow 2.2.3
+  - Apache Spark 3.2
+
 ### Testing the Twitter API
 
 First of all, i developed a small script to test the Twitter API and look at the data response, in this case, a json file. In this script i dont included at final repo cause its made for test but a quote it here:
@@ -99,7 +104,7 @@ With the json file in hand, i could understand better how to manipulate the data
 ### Connecting to Twitter
 Then, i built a python file with one class<a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/plugins/hooks/twitter_hook.py"> (twitter_hook.py)</a> that receive as an argument an airflow module named httphook. In this class i'll connect airflow to twitter api and giving in all the params that i wish receive of the twitter API like author id, twitter id, user id, create at, etc. Also, in this class i created a method that pages if i receive more than one page in the json file (for standard, the twitter API give us 10 tweets per page). <br/>
 In airflow webserver i needed to creat a connection with these parameter:
-<img src="https://github.com/afnscbrl/TwitterToSql/blob/ab22c338d2727d563bf241938909275fffe7ad68/airflow/twitter_connection.png"> 
+<br/>
 <img src="airflow/twitter_connection.png">
 
 ### Creating a DAG and Getting the data
@@ -107,4 +112,18 @@ Next, i made  other python script with one class<a href="https://github.com/afns
 
 ### First tranformation of the data (Bronze to Silver)
 In this step, i introduced the Apache Spark to manipulate the json file. This script <a href="https://github.com/afnscbrl/TwitterToSql/blob/main/spark/transformation.py">transformation.py</a> was the more complicated to me. In it, i have to "explode" the json struct to remove the "hierarchy" in the file. The original schema of json file was like that:
+<br/>
 <img src="spark/printSchema.png">
+<br/><br/>
+So, with the transformation.py i changed the struct of json file to something like that:
+<img src="spark/printSchema2.png">
+<br/><br/>
+Look that the rows like author_id, like_count, etc are in the same columns, they aren't subparts of the others rows anymore. <br/>
+Then i saved the output in Silver stage of the data lake. In this script i used pyspark.sql to manipulated the json file with the functions of this framework. The functions are named similarly to functions in pandas or querys in sql.<br/>
+I put the script as a task in Airflow DAG and to connect spark in with Airflow, is necessary to configure a new connection in airflow webserver, but firts we need install spark provider in airflow with ```pip install apache-airflow-providers-apache-spark``` and setup the connection with this params:
+<img src="spark/spark_connection.png">
+<br/>
+<br/>
+Now, the Airflow DAG is already to run the task to transform raw data into Silver Stage.
+
+### Second transformation of the data (Silver to Gold)
