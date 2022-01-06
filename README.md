@@ -18,7 +18,7 @@
 
 ### Testing the Twitter API
 
-First of all, i developed a small script to test the Twitter API and look at the data response, in this case, a json file. This script i dont included in final repo cause its made for test but a quote it here:
+First of all, i developed a small script to test the Twitter API and look at the data response, in this case, a json file. In this script i dont included at final repo cause its made for test but a quote it here:
 
 ```
 import requests
@@ -99,6 +99,6 @@ With the json file in hand, i could understand better how to manipulate the data
 ### Connecting to Twitter
 Then, i built a class<a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/plugins/hooks/twitter_hook.py"> (twitter_hook.py)</a> that receive as an argument an airflow module named httphook. In this class i'll connect airflow to twitter api and giving in all the params that i wish receive of the twitter API like author id, twitter id, user id, create at, etc. Also, in this class i created a method that pages if i receive more than one page in the json file (for standard, the twitter API give us 10 tweets per page). <br/>
 In airflow webserver i needed to creat a connection with these parameter:
-<img src=> 
+<img src="https://drive.google.com/file/d/1qeCF3f8hbYma37dqhHkvO4nQbKBg8FEj/view?usp=sharing"> 
 
 
