@@ -136,5 +136,9 @@ In final stage of the project i created a <a href="spark/to_sql.py">python file<
 <br/> <br/>
 
 ### Run the DAG and final considerations
-With all the steps done, i could start the DAG in Airflow to orchestrate the all the tasks in row. If any task fail the next task don't run. As seen in the image below the last run, all the tasks have been completed (green squares):
-<img src="airflow/twiter_dag_airflow.png">
+With all the steps done, i could start the DAG in Airflow to orchestrate all the tasks in row. If any task fail, the next task don't run. As seen in the image below, in the last run all the tasks have been completed (green squares):
+<img src="airflow/twiter_dag_airflow.png"> <br/>
+The json file in gold stage was already ready to be used for analysis as seen below, when i used databricks to plot graphs about the data.
+<img src="dataviz.png">
+
+It's all, the project is done.
