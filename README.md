@@ -107,7 +107,7 @@ In airflow webserver i needed to creat a connection with these parameter:
 <img src="airflow/twitter_connection.png">
 
 ### Creating a DAG and Getting the data
-Next, i made  other python script with one class<a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/plugins/operators/twitter_operator.py"> (twitter_operator.py)</a> that is the first task in airflow DAG. This script get a request made for Twitter_Hook and transform into airflow operator, then save the response. Continuing, i built other python file named <a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/dags/twitter_dag.py"> twitter_dag.py </a> responsible for creating a DAG in airflow and get the methods in twitter_operator to execute it when the the task starts.<br/> All the others scripts created will be add in this file to compose the tasks orchestrade by the airflow. With this operator done, we need just start the DAG in airflow webserver to get the first stage (bronze) of the datalake.
+Next, i made  other python script with one class<a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/plugins/operators/twitter_operator.py"> (twitter_operator.py)</a> that is the first task in airflow DAG. This script get a request made for Twitter_Hook and transform into airflow operator, then save the response. Continuing, i built other python file named <a href="https://github.com/afnscbrl/TwitterToSql/blob/main/airflow/dags/twitter_dag.py"> twitter_dag.py </a> responsible for creating a DAG in airflow and get the methods in twitter_operator to execute it when the task starts.<br/> All the others scripts created will be add in this file to compose the tasks orchestrade by the airflow. With this operator done, we need just start the DAG in airflow webserver to get the first stage (bronze) of the datalake.
 
 ### First tranformation of the data (Bronze to Silver)
 In this step, i introduced the Apache Spark to manipulate the json file. This script <a href="https://github.com/afnscbrl/TwitterToSql/blob/main/spark/transformation.py">transformation.py</a> was the more complicated to me. In it, i had to "explode" the json struct to remove the "hierarchy" in the file. The original schema of json file was like that:
@@ -130,7 +130,7 @@ Continuing the process, i selected some fields of the json file in silver stage 
 <img src="spark/gold_stage.png"> <br/>
 With the tests done, i put the script as a task in Airflow DAG too.
 
-### Filling in a table database with the tweets of the Gold stage.
+### Filling a table database with the tweets of the Gold stage.
 In final stage of the project i created a <a href="spark/to_sql.py">python file</a> to fill a Postgres database with a pre-extisting table. 
 <img src="spark/postgres.png">
 <br/> <br/>
